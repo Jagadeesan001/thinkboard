@@ -5,7 +5,7 @@ const router=express.Router()
 
 router.get("/",getnotes)
 router.post("/",createnotes)
-router.put("/put",updatenotes)
-router.delete("/del",deletenotes)
+router.put("/:id",updatenotes)
+router.delete("/:id",deletenotes)
 
 export default router

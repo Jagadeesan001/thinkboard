@@ -9,6 +9,7 @@ export const getnotes = async (req, res) => {
     res.status(500).json({ message: "internal server error" });
   }
 };
+
 export const createnotes = async (req, res) => {
   try {
     const { title, content } = req.body;
@@ -20,9 +21,29 @@ export const createnotes = async (req, res) => {
     res.status(500).json({ message: "internal server error in create api" });
   }
 };
-export const updatenotes = (req, res) => {
-  res.json({ message: "update data" });
+
+export const updatenotes = async (req, res) => {
+  try {
+    const { title, content } = req.body;
+    const noteupdate = await Note.findByIdAndUpdate(req.params.id, {title,content},{new:true});
+    if (!notedelete){
+      return res.json({message:"id not found"})
+    }
+    res.json(noteupdate);
+  } catch (error) {
+    console.log("error in update API : ", error);
+    res.status(500).json({ message: "internal server error in update api" });
+  }
 };
-export const deletenotes = (req, res) => {
-  res.json({ message: "delete data" });a
+export const deletenotes = async (req, res) => {
+  try {
+    const notedelete= await Note.findByIdAndDelete(req.params.id)
+    if (!notedelete){
+      return res.json({message:"id not found"})
+    }
+    res.json(notedelete)
+  } catch (error) {
+    console.log("error in delete API : ", error);
+    res.status(500).json({ message: "internal server error in delete api" });
+  }
 };
