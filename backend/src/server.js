@@ -8,7 +8,8 @@ app.use(express.json());
 app.use("/api/notes", notesRouters);
 const port = process.env.PORT || 5005;
 
-connectDB();
-app.listen(port, () => {
-  console.log("server started");
+connectDB().then(() => {
+  app.listen(port, () => {
+    console.log("server started");
+  });
 });

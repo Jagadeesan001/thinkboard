@@ -2,13 +2,23 @@ import Note from "../models/Note.js";
 
 export const getnotes = async (req, res) => {
   try {
-    const notes = await Note.find();
+    const notes = await Note.find().sort({ createdAt: -1 });
     res.status(200).json(notes);
   } catch (error) {
     console.log("error in get API : ", error);
     res.status(500).json({ message: "internal server error" });
   }
 };
+
+export const getnotesbyID = async (req,res) => {
+  try {
+    const noteID= await Note.findById(req.params.id)
+    res.json({noteID})
+  } catch (error) {
+    console.log("error in get API using ID : ", error);
+    res.status(500).json({ message: "internal server error" });
+  }
+}
 
 export const createnotes = async (req, res) => {
   try {
@@ -26,7 +36,7 @@ export const updatenotes = async (req, res) => {
   try {
     const { title, content } = req.body;
     const noteupdate = await Note.findByIdAndUpdate(req.params.id, {title,content},{new:true});
-    if (!notedelete){
+    if (!updatenotes){
       return res.json({message:"id not found"})
     }
     res.json(noteupdate);
